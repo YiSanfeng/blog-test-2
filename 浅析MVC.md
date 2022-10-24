@@ -36,7 +36,8 @@ Controller = {
 </pre>
 ## EventBus 有哪些 API，是做什么用的
 1. EventBus基本的api有on（监听事件），trigger(emit)（触发事件）,off（取消监听）方法。 用于模块间的通讯，view组件层面，父子组件、兄弟组件通信都可以使eventbus处理
-2. <pre>
+2. API
+<pre>
 //EventBus.js
 class EventBus{
     constructor(){
