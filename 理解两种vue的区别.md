@@ -1,0 +1,24 @@
+# 理解这两种vue的区别
+## Vue完整版
+* 特点：有compiler
+* 视图：写在HTMl里，或者写在template选项
+* cdn导入：vue.js
+* webpack引入：需要配置alias
+* @vue/cli引入：需要额外的配置
+## Vue非完整版
+* 特点：没有compiler
+* 视图：写在render函数里，用h来创建标签
+* adn引入：vue.runtime.js
+* webpack引入：默认使用此版
+* @vue/cli引入：默认使用此版
+## 评价
+* compiler占40%内存
+* h是尤雨溪写好传给render的
+* 文件名不同，生成环境后缀为.min.js
+* 尤雨溪配置的
+* 尤雨溪、蒋豪群配置的
+
+## 思路
+1. 保证用户体验，用户下载的JS文件体积更小，但值支持h函数
+2. 保证开发体验，开发者可直接在vue文件里写HTML标签，而不写h函数
+3. 脏活让loader做，vue-loader把vue文件里的HTML转为h函数
