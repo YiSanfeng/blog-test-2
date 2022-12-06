@@ -73,41 +73,43 @@ Object.defineProperties(obj3,'xxx',{
 * computed适用于动态计算data或props中的数据，需要加return，当数据无变化时会优先从缓存里读取，比较依赖缓存。
 * watch是监听data或props中的数据变化，并且支持异步，当数据发生改变的时候，watch中的函数就会执行，有两个参数，前者是newVal，后者是oldVal。为了发现对象内部值的变化，需要进行深度监听，设置deep: true，但监听数组不需要这么做。
 immediate:true 页面首次加载的时候做一次监听。
-### 模板、指令与修饰符
+## 模板、指令与修饰符
 * 表达式
+
 ```vue
 1. {{object.a}} 表达式
-2. {{ n + 1}} 可以写任何运算
+2. {{n + 1}} 可以写任何运算
 3. {{ fn(n) }} 可以调用函数
 4. 如果值是 undefined 或 null  则不显示
-5. 另一种写法为 < div v-te xt='表达式'> < /div >
+5. 另一种写法为 <div v-te xt='表达式'> </div >
 ```
+
 * HTML内容
 ```vue
-1. 假设 data.x 值为 < strong> hi </ strong>
-2. < div v-html='x'></ div> 即可显示粗体的 hi
+1. 假设 data.x 值为 <strong> hi </strong>
+2. <div v-html='x'></div> 即可显示粗体的 hi
 * 我就想展示 {{ n }}
-1. < div v-pre> {{ n }}< /div>
+1. <div v-pre> {{ n }}</div>
 2. v-pre 不会对模板进行编程
 ```
 * 绑定属性
 ```vue
-1. < img v-bind:src='x' />
+1. <img v-bind:src='x'/>
 * v-bind:简写为：
-1. < img :src='x' />
+1. <mg :src='x'/>
 ```
 * 绑定对象
 ```vue
-1. < div :style='{border:'1px solid red',height:100}'> </ div> //注意这里可以把100px写成100，省略px，但不可以省略 em 
+1. <div :style='{border:'1px solid red',height:100}'> </div> //注意这里可以把100px写成100，省略px，但不可以省略 em 
 ```
-#### 绑定事件
+### 绑定事件
 * v-on:事件名
 ```vue
-1. < button v-on:click='add'>+1< /button>
+1. <button v-on:click='add'>+1</button>
   点击之后，Vue会运行add()  // 会自动加括号
-2. <button v-on:click='xxx(1)'> xxx < /button>
+1. <button v-on:click='xxx(1)'> xxx </button>
   点击之后，Vue会运行xxx(1)
-3. <button v-on:click='n+=1'> xxx </ button>
+1. <button v-on:click='n+=1'> xxx </button>
   点击之后，Vue会运行n+=1
   就是发现函数就加括号调用之，否则就直接运行代码
   这导致一个问题，如xxx(1)返回一个函数咋办
@@ -120,7 +122,7 @@ immediate:true 页面首次加载的时候做一次监听。
   比较常用 
 ```
 
-#### 条件判断
+## 条件判断
 * if...else
 ```vue
 <div v-if='x>0'>
@@ -133,7 +135,7 @@ x 为 0
 x 小于 0
 </div>
 ```
-#### 循环
+## 循环
 * for(value,key)in对象或数组  
 ```vue
 <ul>
@@ -149,14 +151,14 @@ x 小于 0
     </li>
 </ul>
 ```
-### 指令
+## 指令
 * 什么是指令
 ```vue
 <div v-text='x'></div>
 <div v-html='x'></div>
   以 v- 开头的东西就是指令
 ```
-### 修饰符
+## 修饰符
 * 有些指令支持修饰符
 ```vue
 @click.stop='add' 表示阻止事件传播/冒泡
@@ -166,3 +168,53 @@ x 小于 0
 * .sync
 ![.sync理解](images/.sync修饰符.png)
 1. sync修饰符可以实现子组件与父组件的双向绑定，并且可以实现子组件同步修改父组件的值。一般情况下，想要实现父子组件间值的传递，通常使用的是props和自定义事件emit。其中，父组件通过props将值传给子组件，子组件再通过emit将值传给父组件，父组件通过事件监听获取子组件传过来的值。如果想要简化这里的代码，可以使用.sync修饰符，实际上就是一个语法糖。
+
+## 进阶构造属性
+### Directives指令
+* 两种写法
+![Directive的两种写法](images/directive两种写法.png)
+
+## 表单与v-model
+* input输入框
+1. 
+![](images/input双向绑定.png)
+2. v-model='x',将内存绑定到页面中，同时也是把页面和内存绑定在了一起，更改内存会影响到页面，更改页面亦会影响到内存
+* textarea
+原理同上，只是输入框是一个多行样式
+* 复选框
+1. type=checkbox
+![checkbox](images/checkbox.png)
+//在每一个复选框代码里写上input type=checkbox
+2. 单选框type=radio
+![radio](images/radio.png)
+* select选择器
+1. 
+![select](images/select.png)
+2. multiple 多选（用Ctrl加选）
+* form表单（一般用于用户登录）
+1. 登录（提交）按钮
+![form$button](images/form$button.png)
+必须是form且有登录按钮才能进行登录刷新
+2. submit.prevent  
+![](images/form%20submit.png)
+```vue
+<form @submit.prevent = 'onSubmit'>阻止提交的默认动作
+<button type="submit>" 按钮的类型是提交
+```
+### 修饰符
+* v-model.lazy
+1. .lazy![](images/.lazy.png)
+用来监听input事件，当鼠标选择input以外的东西时才会更新UI
+2. input![](images/v-model事件监听.png)
+input是实时更新，change是移出焦点时更新UI
+* v-model.number
+1. .number![](images/.number.png)
+如果想要将数据处理成数字，可现在data中限制username为数字，然后在v-model后加.number，这样做会限制输入
+* v-model.trim
+1. 修剪空格 
+![](images/.trim.png)
+会将两头多余的空格进行修剪
+## v-model
+* v-model的等价写法
+1. 
+![](images/v-model的等价写法.png)
